@@ -1,4 +1,4 @@
-import { Schema, models, Model, model } from 'mongoose';
+import { Schema, models, Model, model, isValidObjectId } from 'mongoose';
 import ICar from '../Interfaces/ICar';
 
 export default class CarODM {
@@ -15,10 +15,35 @@ export default class CarODM {
       doorsQty: { type: Number, required: true },
       seatsQty: { type: Number, required: true },
     });
+
+    this.schema.set('toJSON', {
+      virtuals: true,
+      transform: (_doc, ret, _options) => {
+        const transformed = { ...ret };
+        delete transformed.__v;
+        transformed.id = transformed._id;
+        delete transformed._id;
+        return transformed;
+      },
+    });
+
     this.model = models.Car || model('Car', this.schema);
   }
 
   public async create(car: ICar): Promise<ICar> {
     return this.model.create({ ...car });
+  }
+
+  public async getAll(): Promise<ICar[]> {
+    const cars = await this.model.find().select('-__v').exec();
+    return cars;
+  }
+
+  public async getById(id: string): Promise<ICar | null> {
+    if (!isValidObjectId(id)) {
+      throw new Error('Invalid mongo id');
+    }
+    const car = await this.model.findById(id).select('-__v').exec();
+    return car;
   }
 }
