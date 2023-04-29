@@ -35,7 +35,7 @@ export default class CarODM {
   }
 
   public async getAll(): Promise<ICar[]> {
-    const cars = await this.model.find().select('-__v').exec();
+    const cars = await this.model.find();
     return cars;
   }
 
@@ -43,7 +43,7 @@ export default class CarODM {
     if (!isValidObjectId(id)) {
       throw new Error('Invalid mongo id');
     }
-    const car = await this.model.findById(id).select('-__v').exec();
+    const car = await this.model.findById(id);
     return car;
   }
 }

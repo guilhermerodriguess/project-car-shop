@@ -5,7 +5,7 @@ import Car from '../../../src/Domains/Car';
 import ICar from '../../../src/Interfaces/ICar';
 import CarService from '../../../src/Services/CarService';
 
-describe('Deveria criar um carro', function () {
+describe('Deveria criar um carro, listar todos os carros e encontrar pela ID', function () {
   it('Deveria criar um carro com SUCESSO', async function () {
     // Arrange
     const carInput: ICar = {
@@ -37,10 +37,12 @@ describe('Deveria criar um carro', function () {
 
     // Assert
     expect(result).to.be.deep.equal(carOutput);
+
+    sinon.restore();
   });
   it('Deveria retornar todos os carros', async function () {
     // Arrange
-    const carsOutput: ICar[] = [
+    const carsOutput = [
       {
         id: '634852326b35b59438fbea2f',
         model: 'Marea',
@@ -50,6 +52,7 @@ describe('Deveria criar um carro', function () {
         buyValue: 15.99,
         doorsQty: 4,
         seatsQty: 5,
+        __v: 0,
       },
       {
         id: '634852326b35b59438fbea31',
@@ -59,6 +62,7 @@ describe('Deveria criar um carro', function () {
         buyValue: 39,
         doorsQty: 2,
         seatsQty: 5,
+        __v: 0,
       },
     ];
     sinon.stub(Model, 'find').resolves(carsOutput);
@@ -69,5 +73,33 @@ describe('Deveria criar um carro', function () {
 
     // Assert
     expect(result).to.be.deep.equal(carsOutput);
+
+    sinon.restore();
+  });
+
+  it('Deveria retornar um carro pela ID', async function () {
+    // Arrange
+    const carInput: Car = new Car(
+      {
+        id: '644c522adeaf8379a9f9b694',
+        model: 'Marea',
+        year: 2002,
+        color: 'Black',
+        status: true,
+        buyValue: 15.99,
+        doorsQty: 4,
+        seatsQty: 5,
+      },
+    );
+    sinon.stub(Model, 'findById').resolves(carInput);
+
+    // Act
+    const service = new CarService();
+    const result = await service.getCar('644c522adeaf8379a9f9b694');
+
+    // Assert
+    expect(result).to.be.deep.equal(carInput);
+
+    sinon.restore();
   });
 });
