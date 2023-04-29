@@ -44,11 +44,26 @@ export default class CarController {
     }
   }
 
-  public async getCar(id: string) {
+  public async getCar() {
     try {
+      const { id } = this.req.params;
       const car = await this.service.getCar(id);
       if (car) {
         return this.res.json(car);
+      }
+      throw new Error('Car not found');
+    } catch (error) {
+      this.next(error);
+    }
+  }
+
+  public async patchCar() {
+    try {
+      const { id } = this.req.params;
+      const { body } = this.req;
+      const updateCar = await this.service.updateCar(id, body);
+      if (updateCar) {
+        return this.res.json(updateCar);
       }
       throw new Error('Car not found');
     } catch (error) {

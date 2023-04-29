@@ -46,4 +46,12 @@ export default class CarODM {
     const car = await this.model.findById(id);
     return car;
   }
+
+  public async update(id: string, car: ICar): Promise<ICar | null> {
+    if (!isValidObjectId(id)) {
+      throw new Error('Invalid mongo id');
+    }
+    const updateCar = await this.model.findByIdAndUpdate(id, car);
+    return updateCar;
+  }
 }

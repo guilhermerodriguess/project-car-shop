@@ -15,7 +15,12 @@ routes.get(
 
 routes.get(
   '/cars/:id',
-  (req, res, next) => new CarController(req, res, next).getCar(req.params.id),
+  (req, res, next) => new CarController(req, res, next).getCar(),
+);
+
+routes.put(
+  '/cars/:id',
+  (req, res, next) => new CarController(req, res, next).patchCar(),
 );
 
 export default routes;

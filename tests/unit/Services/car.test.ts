@@ -52,7 +52,6 @@ describe('Deveria criar um carro, listar todos os carros e encontrar pela ID', f
         buyValue: 15.99,
         doorsQty: 4,
         seatsQty: 5,
-        __v: 0,
       },
       {
         id: '634852326b35b59438fbea31',
@@ -62,7 +61,6 @@ describe('Deveria criar um carro, listar todos os carros e encontrar pela ID', f
         buyValue: 39,
         doorsQty: 2,
         seatsQty: 5,
-        __v: 0,
       },
     ];
     sinon.stub(Model, 'find').resolves(carsOutput);

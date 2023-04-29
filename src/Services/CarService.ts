@@ -14,7 +14,7 @@ export default class CarService {
     return this.createCarDomain(newCar);
   }
 
-  public async getCars() {
+  public async getCars(): Promise<ICar[]> {
     const carODM = new CarODM();
     const cars = await carODM.getAll();
     return cars;
@@ -24,5 +24,12 @@ export default class CarService {
     const carODM = new CarODM();
     const car = await carODM.getById(id);
     return this.createCarDomain(car);
+  }
+
+  public async updateCar(id: string, car: ICar) {
+    const carODM = new CarODM();
+    await carODM.update(id, car);
+    const getCar = await carODM.getById(id);
+    return this.createCarDomain(getCar);
   }
 }
