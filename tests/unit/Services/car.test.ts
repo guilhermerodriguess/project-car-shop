@@ -61,7 +61,13 @@ describe('Deveria criar um carro', function () {
         seatsQty: 5,
       },
     ];
+    sinon.stub(Model, 'find').resolves(carsOutput);
+
     // Act
+    const service = new CarService();
+    const result = await service.getCars();
+
     // Assert
+    expect(result).to.be.deep.equal(carsOutput);
   });
 });
