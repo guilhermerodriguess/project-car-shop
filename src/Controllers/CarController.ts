@@ -16,16 +16,7 @@ export default class CarController {
   }
 
   public async create() {
-    const car: ICar = {
-      buyValue: this.req.body.buyValue,
-      color: this.req.body.color,
-      doorsQty: this.req.body.doorsQty,
-      id: this.req.body.id,
-      model: this.req.body.model,
-      seatsQty: this.req.body.seatsQty,
-      year: this.req.body.year,
-      status: this.req.body.status,
-    };
+    const car: ICar = this.req.body;
 
     try {
       const newCar = await this.service.createCar(car);
@@ -57,7 +48,7 @@ export default class CarController {
     }
   }
 
-  public async patchCar() {
+  public async putCar() {
     try {
       const { id } = this.req.params;
       const { body } = this.req;
